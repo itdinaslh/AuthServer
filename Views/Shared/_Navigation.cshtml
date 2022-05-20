@@ -1,0 +1,45 @@
+﻿<nav class="pcoded-navbar navbar-dark brand-dark">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a href="/" class="b-brand">
+                <div class="b-bg">
+                    <img href="~/assets/images/logo-dinas.png" />
+                </div>
+                <span class="b-title">UPST Account</span>
+            </a>
+            <a class="mobile-menu" id="mobile-collapse" href="#"><span></span></a>
+        </div>
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <li data-username="dashboard Default" class='nav-item @(ViewBag.Level1 == "dashboard" ? "active" : "")'>
+                    <a href="/" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Other</label>
+                </li>
+                <li data-username="Users Roles Permission" class='nav-item pcoded-hasmenu @(ViewBag.Level1 == "administrasi" ? "active pcoded-trigger" : "")'>
+                    <a href="#" class="nav-link"><span class="pcoded-micon"><i class="feather icon-menu"></i></span><span class="pcoded-mtext">Administrasi</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class='@(ViewBag.Level2 == "users" ? "active" : "")'><a asp-controller="User" asp-action="Index" class=''>Users</a></li>
+                        <li class='pcoded-hasmenu @(ViewBag.Level2 == "rnp" ? "active pcoded-trigger" : "")'>
+                            <a href="#" class="">Roles &amp; Permission</a>
+                            <ul class="pcoded-submenu">
+                                <li class='@(ViewBag.Level3 == "roles" ? "active" : "")'><a asp-action="Index" asp-controller="Role" class="">Roles</a></li>
+                                <li class=""><a href="#" class="">Permission</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li data-username="Disabled Menu" class="nav-item disabled"><a href="#" class="nav-link"><span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Disabled menu</span></a></li>
+                <li data-username="List Aplikasi" class='nav-item @(ViewBag.Level1 == "applications" ? "active" : "")'><a asp-action="Index" asp-controller="App" class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span class="pcoded-mtext">List Aplikasi</span></a></li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Support</label>
+                </li>
+                <li data-username="Dokumentasi" class="nav-item"><a href="#" class="nav-link" target="_blank"><span class="pcoded-micon"><i class="feather icon-book"></i></span><span class="pcoded-mtext">Dokumentasi</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,60 @@
+@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+
+@{
+    Layout = "_Master";
+    ViewBag.Level1 = "administrasi";
+    ViewBag.Level2 = "rnp";
+    ViewBag.Level3 = "roles";
+}
+
+<h3 class="m-b-10">Roles</h3>
+
+<form method="post" asp-action="AddRole" asp-controller="role">
+    <div class="input-group m-b-15">
+        <input name="roleName" class="form-control w-10">
+        <span class="input-group-btn">
+            <button class="btn btn-info">Add New Role</button>
+        </span>
+    </div>
+</form>
+<table class="table table-striped" id="roleTable">
+    <thead>
+        <tr>
+            <th>
+                Role
+            </th>
+            <th>
+                Id
+            </th>
+            <th style="width:10%">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>
+                    @role.Name
+                </td>
+                <td>
+                    @role.Id
+                </td>
+                <td class="text-right">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="ActionButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Action
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="ActionButton">
+                            <li class="dropdown-item"><a href="#">Edit</a></li>
+                            <li class="dropdown-item"><a href="#">Delete</a></li>
+                            <li class="dropdown-item"><a asp-controller="Permission" asp-action="Index" asp-route-roleId="@role.Id">Manage Permissions</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,74 @@
+﻿@model List<String>
+
+@{
+    Layout = "_Master";
+    ViewBag.Level1 = "applications";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/assets/plugins/data-tables/css/datatables.min.css" />
+    <link rel="stylesheet" href="~/assets/plugins/sweetalert/sweetalert2.min.css" />    
+}
+
+<!--Modal Window-->
+<div id='myModal' class='modal fade in' data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>List Aplikasi</h5>
+        <div class="card-header-right">
+            <div class="btn-group card-option">
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="feather icon-more-horizontal"></i>
+                </button>
+                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                    <li class="dropdown-item"><a href="javascript:void(0)" data-href="/manage/applications/create" class="showMe"><span><i class="feather icon-file-plus"></i> Tambah App</span><span style="display:none"><i class="feather icon-file-plus"></i> Tambah App</span></a></li>
+                    <li class="dropdown-item full-card"><a href="#"><span><i class="feather icon-maximize"></i> Maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                    <li class="dropdown-item minimize-card"><a href="#"><span><i class="feather icon-minus"></i> Collapse</span><span style="display:none"><i class="feather icon-plus"></i> Expand</span></a></li>
+                    <li class="dropdown-item reload-card"><a href="#"><i class="feather icon-refresh-cw"></i> Reload</a></li>                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table" id="appTable">
+            <thead>
+                <tr>
+                    <th>Client ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(string app in Model)
+                {
+                    <tr>
+                        <td>@app</td>
+                        <td style="width:15%;"><a href="javascript:void(0)" data-href="/manage/applications/edit/?id=@app" class="btn btn-primary showMe">
+                                <i class="fas fa-wrench"></i> Manage App
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- datatable Js -->
+    <script src="~/assets/plugins/data-tables/js/datatables.min.js"></script>
+    <script src="~/assets/plugins/sweetalert/sweetalert2.min.js"></script>
+    <script src="~/js/modalForm.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#appTable').DataTable();
+        })
+    </script>
+}
