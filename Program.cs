@@ -1,4 +1,5 @@
 using AuthServer.Data;
+using AuthServer.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -29,11 +30,16 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
 
+    
+// Add Service to DI
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>(); 
+
 builder.Services.Configure<IdentityOptions>(options => {
     options.ClaimsIdentity.UserNameClaimType = Claims.Name;
     options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
     options.ClaimsIdentity.RoleClaimType = Claims.Role;
     options.ClaimsIdentity.EmailClaimType = Claims.Email;
+    // options.ClaimsIdentity.FullNameType = Claims.FullName;
 
 
     options.SignIn.RequireConfirmedAccount = false;
