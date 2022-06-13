@@ -30,16 +30,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
 
-    
-// Add Service to DI
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>(); 
-
 builder.Services.Configure<IdentityOptions>(options => {
     options.ClaimsIdentity.UserNameClaimType = Claims.Name;
     options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
     options.ClaimsIdentity.RoleClaimType = Claims.Role;
     options.ClaimsIdentity.EmailClaimType = Claims.Email;
-    // options.ClaimsIdentity.FullNameType = Claims.FullName;
+    // options.ClaimsIdentity.UserNameClaimType = Claims.Nickname;
 
 
     options.SignIn.RequireConfirmedAccount = false;
@@ -50,6 +46,9 @@ builder.Services.AddQuartz(options => {
     options.UseSimpleTypeLoader();
     options.UseInMemoryStore();
 });
+
+// Add Service to DI
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>(); 
 
 builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
@@ -85,6 +84,7 @@ builder.Services.AddOpenIddict()
 
         options.AddEphemeralEncryptionKey()
                 .AddEphemeralSigningKey();
+        
 
         // Force client applications to use Proof Key for Code Exchange (PKCE).
         options.RequireProofKeyForCodeExchange(); 
