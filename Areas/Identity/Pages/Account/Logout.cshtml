@@ -1,6 +1,7 @@
 ﻿@page
 @model LogoutModel
 @{
+    Layout = "~/Views/Shared/_Blank.cshmtl";
     ViewData["Title"] = "Log out";
 }
 
@@ -10,7 +11,7 @@
         #nullable disable
         if (User.Identity.IsAuthenticated)
         {
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+            <form class="form-inline text-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
                 <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
             </form>
         }
