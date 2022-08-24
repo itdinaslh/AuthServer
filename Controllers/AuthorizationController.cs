@@ -378,4 +378,19 @@ public class AuthorizationController : Controller
                 yield break;
         }
     }
+
+    // Get User Info
+
+    //[Authorize(AuthenticationSchemes = OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)]
+    //[HttpGet("~/connect/userinfo")]
+    //public async Task<IActionResult> UserInfo() {
+    //    var claimsPrincipal = (await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)).Principal;
+
+    //    return Ok(new
+    //    {
+    //        Name = claimsPrincipal.GetClaim(Claims.Subject),
+    //        Email = claimsPrincipal.GetClaim(Claims.Email),
+    //        Username = claimsPrincipal.GetClaim(Claims.Username)
+    //    });
+    //}
 }
