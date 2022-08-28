@@ -47,6 +47,7 @@ public class UserinfoController : Controller
 
         claims[Claims.Email] = await _userManager.GetEmailAsync(user);
         claims[Claims.PhoneNumber] = await _userManager.GetPhoneNumberAsync(user);
+        claims[Claims.GivenName] = user.FullName;
 
         if (User.HasScope(Scopes.Email))
         {
@@ -65,15 +66,13 @@ public class UserinfoController : Controller
             claims[Claims.Role] = await _userManager.GetRolesAsync(user);
         }
 
+        if (User.HasScope(Scopes.Profile)) {
+            claims[Claims.GivenName] = user.FullName;
+        }
+
         // Note: the complete list of standard claims supported by the OpenID Connect specification
         // can be found here: http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
 
-        return Ok(new
-        {
-            id = await _userManager.GetUserIdAsync(user),
-            name = await _userManager.GetUserNameAsync(user),
-            fullName = user.FullName,
-            email = user.Email
-        });
+        return Ok(claims);
     }
 }

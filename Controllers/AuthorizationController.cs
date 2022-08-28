@@ -103,7 +103,7 @@ public class AuthorizationController : Controller
 
         // Retrieve the profile of the logged in user.
         var user = await _userManager.GetUserAsync(result.Principal) ??
-            throw new InvalidOperationException("The user details cannot be retrieved.");
+            throw new InvalidOperationException("The user details cannot be retrieved.");        
 
         // Retrieve the application details from the database.
         var application = await _applicationManager.FindByClientIdAsync(request.ClientId) ??
@@ -138,6 +138,17 @@ public class AuthorizationController : Controller
             case ConsentTypes.Explicit when authorizations.Any() && !request.HasPrompt(Prompts.Consent):
                 var principal = await _signInManager.CreateUserPrincipalAsync(user);
 
+                // var claims = new List<Claim> {
+                //     new Claim(OpenIddictConstants.Claims.Subject, result.Principal.Identity.Name),
+                //     new Claim("fullname", user.FullName).SetDestinations(OpenIddictConstants.Destinations.AccessToken)
+                // };
+
+                // var ClaimsIdentity = new ClaimsIdentity(claims, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+
+                // var principal = new ClaimsPrincipal(ClaimsIdentity);
+
+                ((ClaimsIdentity)principal.Identity).AddClaim(new Claim(ClaimTypes.GivenName, user.FullName));
+
                 // Note: in this sample, the granted scopes match the requested scope
                 // but you may want to allow the user to uncheck specific scopes.
                 // For that, simply restrict the list of scopes before calling SetScopes.
@@ -157,12 +168,18 @@ public class AuthorizationController : Controller
                         scopes: principal.GetScopes());
                 }
 
-                principal.SetAuthorizationId(await _authorizationManager.GetIdAsync(authorization));
+                principal.SetAuthorizationId(await _authorizationManager.GetIdAsync(authorization));                         
 
-                foreach (var claim in principal.Claims)
-                {
-                    claim.SetDestinations(GetDestinations(claim, principal));                    
-                }
+                // foreach (var claim in principal.Claims)
+                // {                    
+                //     // claim.SetDestinations(GetDestinations(claim, principal));  
+                //     claim.SetDestinations(claim.Type switch {
+                //         Claims.GivenName when principal.HasScope(Scopes.Profile) => new [] {
+                //             OpenIddictConstants.Destinations.AccessToken,
+                //             OpenIddictConstants.Destinations.IdentityToken
+                //         }
+                //     });                  
+                // }
 
                 return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
 
@@ -229,11 +246,13 @@ public class AuthorizationController : Controller
 
         var principal = await _signInManager.CreateUserPrincipalAsync(user);
 
+        ((ClaimsIdentity)principal.Identity).AddClaim(new Claim(ClaimTypes.GivenName, user.FullName));
+
         // Note: in this sample, the granted scopes match the requested scope
         // but you may want to allow the user to uncheck specific scopes.
         // For that, simply restrict the list of scopes before calling SetScopes.
         principal.SetScopes(request.GetScopes());
-        principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
+        principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());        
 
         // Automatically create a permanent authorization to avoid requiring explicit consent
         // for future authorization or token requests containing the same scopes.
@@ -252,7 +271,7 @@ public class AuthorizationController : Controller
 
         foreach (var claim in principal.Claims)
         {
-            claim.SetDestinations(GetDestinations(claim, principal));
+            claim.SetDestinations(GetDestinations(claim, principal));            
         }
 
         // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
@@ -303,6 +322,7 @@ public class AuthorizationController : Controller
             // when the user password/roles change, use the following line instead:
             // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
             var user = await _userManager.GetUserAsync(principal);
+            
             if (user == null)
             {
                 return Forbid(
@@ -326,9 +346,18 @@ public class AuthorizationController : Controller
                     }));
             }
 
+            ((ClaimsIdentity)principal.Identity).AddClaim(new Claim(ClaimTypes.GivenName, user.FullName));
+
             foreach (var claim in principal.Claims)
             {
                 claim.SetDestinations(GetDestinations(claim, principal));
+
+                // claim.SetDestinations(claim.Type switch {
+                //     Claims.GivenName when principal.HasScope(Scopes.Profile) => new [] {
+                //         OpenIddictConstants.Destinations.AccessToken,
+                //         OpenIddictConstants.Destinations.IdentityToken
+                //     }
+                // });
             }
 
             // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
@@ -346,6 +375,10 @@ public class AuthorizationController : Controller
 
         switch (claim.Type)
         {
+            case Claims.GivenName:                
+                yield return Destinations.IdentityToken;
+
+                yield break;
             case Claims.Name:
                 yield return Destinations.AccessToken;
 
