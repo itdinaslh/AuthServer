@@ -85,6 +85,10 @@ namespace AuthServer.Areas.Identity.Pages.Account
             public string NIK { get; set; }
 
             [Required]
+            [MaxLength(16)]
+            public string Phone { get; set; }
+
+            [Required]
             [Display(Name = "Nama Lengkap")]
             [MaxLength(100, ErrorMessage = "Max 100 Karakter")]
             public string FullName { get; set; }
@@ -125,6 +129,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FullName = Input.FullName;
                 user.UserName = Input.NIK;
+                user.PhoneNumber = Input.Phone;
 
                 await _userStore.SetUserNameAsync(user, Input.NIK, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

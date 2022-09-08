@@ -84,7 +84,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == Input.Email.ToUpper() || u.NormalizedEmail == Input.Email.ToUpper());
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == Input.Email || u.Email == Input.Email || u.PhoneNumber == Input.Email);
 
                 if (user is not null) {
                     var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
