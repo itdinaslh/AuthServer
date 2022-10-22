@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
  namespace AuthServer.Controllers;
 
-[Authorize]
+[Authorize(Roles = "SysAdmin")]
  public class RoleController : Controller {
      private readonly RoleManager<IdentityRole> _roleManager;
 
