@@ -122,6 +122,6 @@ public class UserApiController : ControllerBase
             return new JsonResult(Result.Success());
         }
 
-        return new JsonResult(Result.Failed());
+        return StatusCode(500, "Something wrong!");
     }
 }
