@@ -108,8 +108,9 @@ public class UserApiController : ControllerBase
 
         var user = CreateUser();
         user.FullName = model.FullName;
+        user.PhoneNumber = model.PhoneNumber;
 
-        await _userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);
+        await _userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);        
         await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
         var result = await _userManager.CreateAsync(user, model.Password);
 
