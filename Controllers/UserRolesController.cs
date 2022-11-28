@@ -8,7 +8,7 @@ using AuthServer.Models;
 
 namespace AuthServer.Controllers;
 
-[Authorize]
+[Authorize(Roles = "SysAdmin")]
 public class UserRolesController : Controller {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;

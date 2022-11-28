@@ -6,7 +6,7 @@ using AuthServer.Data;
 
 namespace AuthServer.Controllers;
 
-[Authorize]
+[Authorize(Roles = "SysAdmin")]
 public class UserController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
 

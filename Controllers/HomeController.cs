@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AuthServer.Controllers;
 
-[Authorize]
+[Authorize(Roles = "SysAdmin")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
