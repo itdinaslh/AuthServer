@@ -21,7 +21,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AuthServer.Areas.Identity.Pages.Account
 {
-    public class RegisterPKMModel : PageModel
+    public class RegisterPJLPModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -30,7 +30,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterPKMModel(
+        public RegisterPJLPModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
@@ -80,9 +80,15 @@ namespace AuthServer.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [Display(Name = "Nama PT/Badan Usaha")]
+            [Display(Name = "Nama Lengkap")]
             [MaxLength(50, ErrorMessage = "Max 50 Karakter")]
             public string FullName { get; set; }
+
+            [Required]
+            [Display(Name = "NIK / No KTP")]
+            [MinLength(16, ErrorMessage = "Kurang dari 16 karakter")]
+            [MaxLength(16, ErrorMessage = "Lebih dari 16 karakter")]
+            public string NIK { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -92,11 +98,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [Required]
-            [Display(Name = "Jenis PKM")]
-            public string JenisPKM { get; set; }
+            public string Password { get; set; }            
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -117,14 +119,15 @@ namespace AuthServer.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= "https://localhost:7290/dashboard";
+            returnUrl ??= "https://localhost:7177/dashboard";
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
                 user.FullName = Input.FullName;
+                user.UserName = Input.NIK;
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.NIK, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -134,7 +137,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var role = await _userManager.AddToRoleAsync(user, Input.JenisPKM);
+                    var role = await _userManager.AddToRoleAsync(user, "PjlpUser");
                     await _userManager.AddClaimAsync(user, new Claim("UserFullName", Input.FullName, ClaimValueTypes.String));
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

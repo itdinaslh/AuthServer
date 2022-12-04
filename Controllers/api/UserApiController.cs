@@ -69,10 +69,11 @@ public class UserApiController : ControllerBase
         return (IUserEmailStore<ApplicationUser>)_userStore;
     }
 
-    [HttpPost("/api/user/store")]
+    [HttpPost("/api/user/pjlp/store")]
     public async Task<IActionResult> StoreNewUser() {
         var namaUser = Request.Form["UserName"].FirstOrDefault();
         var myEmail = Request.Form["Email"].FirstOrDefault();
+        var myRole = Request.Form["Roles"].FirstOrDefault();
         var isExist = await _userManager.Users.Where(x => x.UserName == namaUser || x.Email == myEmail).FirstOrDefaultAsync();
 
         if (isExist is not null) {
@@ -84,15 +85,19 @@ public class UserApiController : ControllerBase
 
         await _userStore.SetUserNameAsync(user, Request.Form["UserName"].FirstOrDefault(), CancellationToken.None);
         await _emailStore.SetEmailAsync(user, Request.Form["Email"].FirstOrDefault(), CancellationToken.None);
+        await _emailStore.SetEmailConfirmedAsync(user, true, CancellationToken.None);
         var result = await _userManager.CreateAsync(user, Request.Form["Password"].FirstOrDefault());
 
         if (result.Succeeded) {
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var role = await _userManager.AddToRoleAsync(user, Request.Form["Roles"].FirstOrDefault());
-            var pjlp = await _userManager.AddToRoleAsync(user, "PjlpUser");
+            var role = await _userManager.AddToRoleAsync(user, Request.Form["Roles"].FirstOrDefault());            
 
-            return new JsonResult(Result.Success());
+            // return new JsonResult(Result.Success());
+
+            var hasil = new Dictionary<string, string>();
+            hasil.Add("id", user.Id.ToString());
+            return Ok(hasil);
         }
 
         return new JsonResult(Result.Failed());
