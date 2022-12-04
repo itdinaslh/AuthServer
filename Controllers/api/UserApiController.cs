@@ -69,39 +69,39 @@ public class UserApiController : ControllerBase
         return (IUserEmailStore<ApplicationUser>)_userStore;
     }
 
-    [HttpPost("/api/user/pjlp/store")]
-    public async Task<IActionResult> StoreNewUser() {
-        var namaUser = Request.Form["UserName"].FirstOrDefault();
-        var myEmail = Request.Form["Email"].FirstOrDefault();
-        var myRole = Request.Form["Roles"].FirstOrDefault();
-        var isExist = await _userManager.Users.Where(x => x.UserName == namaUser || x.Email == myEmail).FirstOrDefaultAsync();
+    // [HttpPost("/api/user/pjlp/store")]
+    // public async Task<IActionResult> StoreNewUser() {
+    //     var namaUser = Request.Form["UserName"].FirstOrDefault();
+    //     var myEmail = Request.Form["Email"].FirstOrDefault();
+    //     var myRole = Request.Form["RoleName"].FirstOrDefault();
+    //     var isExist = await _userManager.Users.Where(x => x.UserName == namaUser || x.Email == myEmail).FirstOrDefaultAsync();
 
-        if (isExist is not null) {
-            return new JsonResult(Result.Exists());
-        }
+    //     if (isExist is not null) {
+    //         return new JsonResult(Result.Exists());
+    //     }
 
-        var user = CreateUser();
-        user.FullName = Request.Form["FullName"].FirstOrDefault();
+    //     var user = CreateUser();
+    //     user.FullName = Request.Form["FullName"].FirstOrDefault();
 
-        await _userStore.SetUserNameAsync(user, Request.Form["UserName"].FirstOrDefault(), CancellationToken.None);
-        await _emailStore.SetEmailAsync(user, Request.Form["Email"].FirstOrDefault(), CancellationToken.None);
-        await _emailStore.SetEmailConfirmedAsync(user, true, CancellationToken.None);
-        var result = await _userManager.CreateAsync(user, Request.Form["Password"].FirstOrDefault());
+    //     await _userStore.SetUserNameAsync(user, Request.Form["UserName"].FirstOrDefault(), CancellationToken.None);
+    //     await _emailStore.SetEmailAsync(user, Request.Form["Email"].FirstOrDefault(), CancellationToken.None);
+    //     await _emailStore.SetEmailConfirmedAsync(user, true, CancellationToken.None);
+    //     var result = await _userManager.CreateAsync(user, Request.Form["Password"].FirstOrDefault());
 
-        if (result.Succeeded) {
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var role = await _userManager.AddToRoleAsync(user, Request.Form["Roles"].FirstOrDefault());            
+    //     if (result.Succeeded) {
+    //         var userId = await _userManager.GetUserIdAsync(user);
+    //         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    //         var role = await _userManager.AddToRoleAsync(user, Request.Form["RoleName"].FirstOrDefault());            
 
-            // return new JsonResult(Result.Success());
+    //         // return new JsonResult(Result.Success());
 
-            var hasil = new Dictionary<string, string>();
-            hasil.Add("id", user.Id.ToString());
-            return Ok(hasil);
-        }
+    //         var hasil = new Dictionary<string, string>();
+    //         hasil.Add("id", user.Id.ToString());
+    //         return Ok(hasil);
+    //     }
 
-        return new JsonResult(Result.Failed());
-    }
+    //     return new JsonResult(Result.Failed());
+    // }
 
     [HttpPost("/api/user/driver")]
     public async Task<IActionResult> StoreDriver(UserModel model) {
@@ -113,7 +113,7 @@ public class UserApiController : ControllerBase
 
         var user = CreateUser();
         user.FullName = model.FullName;
-        user.PhoneNumber = model.PhoneNumber;
+        // user.PhoneNumber = model.PhoneNumber;
 
         await _userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);        
         await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
@@ -124,6 +124,33 @@ public class UserApiController : ControllerBase
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var role = await _userManager.AddToRoleAsync(user, model.Roles);
             var pjlp = await _userManager.AddToRoleAsync(user, "PjlpUser");
+
+            return new JsonResult(Result.Success());
+        }
+
+        return StatusCode(500, "Something wrong!");
+    }
+
+    [HttpPost("/api/user/pjlp/store")]
+    public async Task<IActionResult> StorePjlpUser(UserModel model) {
+        var isExist = await _userManager.Users.Where(u => u.UserName == model.UserName).FirstOrDefaultAsync();
+
+        if (isExist is not null) {
+            return new JsonResult(Result.Exists());
+        }
+
+        var user = CreateUser();
+        user.FullName = model.FullName;
+        // user.PhoneNumber = model.PhoneNumber;
+
+        await _userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);        
+        await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
+        var result = await _userManager.CreateAsync(user, model.Password);
+
+        if (result.Succeeded) {
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var role = await _userManager.AddToRoleAsync(user, model.Roles);            
 
             return new JsonResult(Result.Success());
         }
