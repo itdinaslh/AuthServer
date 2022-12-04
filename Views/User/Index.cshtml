@@ -9,61 +9,73 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/assets/plugins/data-tables/css/datatables.min.css">
+    <link rel="stylesheet" href="~/assets/plugins/sweetalert/sweetalert2.min.css">
 }
 
-<div class="row">
-    <div class="col-sm-12">        
-        <div class="card">
-            <div class="card-header">
+<!--Modal Window-->
+<div id='myModal' class='modal fade in' data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div id="UserDiv">
+    <div class="row">
+        <div class="col-sm-12">        
+            <div class="card">
                 <div class="card-header">
-                    <h5>Data user</h5>
-                    <span class="d-block m-t-5">Warning, user dengan roles SysAdmin tidak boleh dirubah</span>
-                    <div class="card-header-right">
-                    <div class="btn-group card-option">
-                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="feather icon-more-horizontal"></i>
-                        </button>
-                        <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                            <li class="dropdown-item"><a href="#"><span><i class="feather icon-file-plus"></i> Tambah User</span><span style="display:none"><i class="feather icon-file-plus"></i> Tambah App</span></a></li>                                                
-                        </ul>
+                    <div class="card-header">
+                        <h5>Data user</h5>
+                        <span class="d-block m-t-5">Warning, user dengan roles SysAdmin tidak boleh dirubah</span>
+                        <div class="card-header-right">
+                        <div class="btn-group card-option">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="feather icon-more-horizontal"></i>
+                            </button>
+                            <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-item"><a href="javascript:void(0)" data-href="/administration/users/create" class="showMe"><span><i class="feather icon-file-plus"></i> Tambah User</span><span style="display:none"><i class="feather icon-file-plus"></i> Tambah User</span></a></li>                                                
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                </div>
-                <div class="card-block table-border-style">
-                    <div class="table-responsive">
-                        <table class="display table nowrap table table-striped" id="UserTable">
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Email</th>
-                                    <th style="width:15%;">Action</th>            
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var user in Model)
-                                {
+                    </div>
+                    <div class="card-block table-border-style">
+                        <div class="table-responsive">
+                            <table class="display table nowrap table table-striped" id="UserTable">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <a>@user.UserName</a>
-                                                    <br />
-                                                    <small>
-                                                        @user.Id
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a>@user.Email</a></td>
-                                        <td>
-                                            <a asp-controller="userroles" asp-action="Index" asp-route-userId="@user.Id" class="btn btn-primary">
-                                                <i class="fas fa-wrench"></i> Manage Roles
-                                            </a>
-                                        </td>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th style="width:15%;">Action</th>            
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <a>@user.UserName</a>
+                                                        <br />
+                                                        <small>
+                                                            @user.Id
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><a>@user.Email</a></td>
+                                            <td>
+                                                <a asp-controller="userroles" asp-action="Index" asp-route-userId="@user.Id" class="btn btn-primary">
+                                                    <i class="fas fa-wrench"></i> Manage Roles
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,8 +83,14 @@
     </div>
 </div>
 
+
+
 @section Scripts {
     <!-- datatable Js -->
     <script src="~/assets/plugins/data-tables/js/datatables.min.js"></script>
+    <script src="~/assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <script src="~/js/modalForm.js"></script>
     <script src="~/js/pages/administration/users.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
 }
