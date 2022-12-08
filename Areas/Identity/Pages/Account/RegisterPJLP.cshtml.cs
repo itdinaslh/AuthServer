@@ -75,20 +75,20 @@ namespace AuthServer.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email wajib diisi")]
+            [EmailAddress(ErrorMessage = "Format email tidak sesuai")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Nama lengkap wajib diisi")]
             [Display(Name = "Nama Lengkap")]
             [MaxLength(50, ErrorMessage = "Max 50 Karakter")]
             public string FullName { get; set; }
 
-            [Required]
-            [Display(Name = "NIK / No KTP")]
-            [MinLength(16, ErrorMessage = "Kurang dari 16 karakter")]
-            [MaxLength(16, ErrorMessage = "Lebih dari 16 karakter")]
+            [Required(ErrorMessage = "NIK / No KTP wajib diisi")]
+            [Display(Name = "NIK / No KTP")]            
+            [Range(0, 9999999999999999, ErrorMessage = "Masukan format NIK dengan benar")]
+            [StringLength(16, MinimumLength = 16, ErrorMessage = "NIK harus 16 karakter")]
             public string NIK { get; set; }
 
             /// <summary>
@@ -96,9 +96,9 @@ namespace AuthServer.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} minimal {2} karakter", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Password")]            
             public string Password { get; set; }            
 
             /// <summary>
@@ -112,13 +112,13 @@ namespace AuthServer.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = "https://ekinerjapjlp.jakarta.go.id/dashboard")
         {
             ReturnUrl = HttpUtility.UrlDecode(returnUrl);
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = "https://ekinerjapjlp.jakarta.go.id/dashboard")
         {
             returnUrl ??= HttpUtility.UrlDecode(returnUrl);
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -126,10 +126,10 @@ namespace AuthServer.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.FullName = Input.FullName;
-                user.UserName = Input.NIK;
+                user.UserName = Input.NIK.ToString();
                 user.InjectID = 1001;                
 
-                await _userStore.SetUserNameAsync(user, Input.NIK, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.NIK.ToString(), CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
