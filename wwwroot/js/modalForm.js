@@ -10,6 +10,8 @@ function bindForm(dialog) {
                     showSuccessMessage();
                 } else if (result.invalid) {
                     showInvalidMessage();
+                } else if (result.failed) {
+                    showFailedMessage();
                 } else {
                     $('#myModalContent').html(result);
                     bindForm();
@@ -23,12 +25,21 @@ function bindForm(dialog) {
 function showSuccessMessage() {
     swal({
         position: 'top-end',
-        type: 'success',
+        type: 'error',
         title: 'Data berhasil disimpan!',
         showConfirmButton: false,
         timer: 1000
     }).then(function () {
         loadContent();
+    });
+}
+
+function showFailedMessage() {
+    swal({
+        position: 'center',
+        type: 'warning',
+        title: 'Data Gagal Disimpan',
+        showConfirmButton: false
     });
 }
 

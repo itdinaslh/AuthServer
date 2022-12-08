@@ -14,9 +14,8 @@ public class UserController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
 
     public UserController(UserManager<ApplicationUser> userManager) {
-        _userManager = userManager;
+        _userManager = userManager;        
     }
-
     [Route("/administration/users")]
     public async Task<IActionResult> Index() {
         var allUser = await _userManager.Users.ToListAsync();
@@ -46,6 +45,38 @@ public class UserController : Controller {
         }
 
         return PartialView("~/Views/User/Add.cshtml", model);
+    }
+
+    [HttpGet("/user/password/change")]
+    public IActionResult ChangePassword() {
+        return PartialView();
+    }
+
+    [HttpPost("/user/password/change")]
+    public async Task<IActionResult> ChangePassword(ChangeModel model) {
+        if (ModelState.IsValid) {
+            var user = await _userManager.FindByIdAsync(model.UserID);
+
+            if (user is not null) {
+                bool role = await _userManager.IsInRoleAsync(user, "SysAdmin");
+                if (role) {
+                    return Json(Result.Failed());
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var result = await _userManager.ResetPasswordAsync(user, token, model.Password);
+
+                if (result.Succeeded) {
+                    return Json(Result.Success());
+                } else {
+                    return Json(Result.Failed());
+                }                
+            }
+        }        
+
+        return PartialView(model);
+           
     }
 
      private ApplicationUser CreateUser()

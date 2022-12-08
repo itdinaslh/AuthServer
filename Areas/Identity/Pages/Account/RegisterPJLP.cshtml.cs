@@ -107,7 +107,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Password & konfirmasi tidak sesuai")]
             public string ConfirmPassword { get; set; }
         }
 
