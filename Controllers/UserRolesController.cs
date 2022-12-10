@@ -21,6 +21,7 @@ public class UserRolesController : Controller {
         _roleManager = roleManager;
     }
 
+    [HttpGet("/manage/users/roles")]
     public async Task<IActionResult> Index(string userId) {
         var viewModel = new List<UserRolesViewModel>();
         var user = await _userManager.FindByIdAsync(userId);

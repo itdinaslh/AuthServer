@@ -112,13 +112,15 @@ namespace AuthServer.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync(string returnUrl = "https://ekinerjapjlp.jakarta.go.id/dashboard")
+        public async Task OnGetAsync(string returnUrl = myReturn)
         {
             ReturnUrl = HttpUtility.UrlDecode(returnUrl);
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = "https://ekinerjapjlp.jakarta.go.id/dashboard")
+        private const string myReturn = "https%3a%2f%2flocalhost%3a7177%2fdashboard";       
+
+        public async Task<IActionResult> OnPostAsync(string returnUrl = myReturn)
         {
             returnUrl ??= HttpUtility.UrlDecode(returnUrl);
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
