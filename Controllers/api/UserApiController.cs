@@ -7,7 +7,6 @@ using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
 using AuthServer.Helpers;
 using AuthServer.Models;
-using System.Linq.Dynamic.Core;
 
 namespace AuthServer.Controllers;
 
