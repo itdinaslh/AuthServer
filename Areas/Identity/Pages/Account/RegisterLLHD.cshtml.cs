@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AuthServer.Areas.Identity.Pages.Account
 {
-    public class RegisterPJLPModel : PageModel
+    public class RegisterLLHDModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -31,7 +31,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterPJLPModel (
+        public RegisterLLHDModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
@@ -129,8 +129,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.FullName = Input.FullName;
-                user.UserName = Input.NIK.ToString();
-                user.InjectID = 1001;                
+                user.UserName = Input.NIK.ToString();                      
 
                 await _userStore.SetUserNameAsync(user, Input.NIK.ToString(), CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -142,7 +141,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var role = await _userManager.AddToRoleAsync(user, "PjlpUser");
+                    var role = await _userManager.AddToRoleAsync(user, "LabClient");
                     await _userManager.AddClaimAsync(user, new Claim("UserFullName", Input.FullName, ClaimValueTypes.String));
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

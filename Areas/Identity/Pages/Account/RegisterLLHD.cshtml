@@ -1,0 +1,138 @@
+@page
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" style="" lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script src="~/assets/llhd/turbolinks.js"></script>
+    <script src="~/assets/llhd/jquery-3.5.1.min.js"></script>
+    <script src="~/assets/llhd/bootstrap.min_002.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#myModal").modal('show');
+        });
+    </script>
+
+
+    <link href="~/assets/llhd/css.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/assets/llhd/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/llhd/all.min.css">
+    <link rel="stylesheet" href="~/assets/llhd/ionicons.min.css">
+    <link rel="stylesheet" href="~/assets/llhd/iconkit.min.css">
+    <link rel="stylesheet" href="~/assets/llhd/theme.min.css">
+    <script src="~/assets/llhd/modernizr-2.8.3.min.js"></script>
+
+    <script>
+        Turbolinks.start();
+    </script>
+
+<meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><title>Registrasi | LLHD - DKI Jakarta</title><meta name="description" content=""><meta name="keywords" content=""><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="http://llhd.kopilotus.id/favicon.png" type="image/x-icon">
+</head>
+
+<body>
+<div class="auth-wrapper">
+    <div class="container-fluid h-100">
+        <div class="row flex-row h-100 bg-white">
+            <div class="col-xl-8 col-lg-6 col-md-5 p-0 d-md-block d-lg-block d-sm-none d-none">
+                <div class="lavalite-bg" style="background-image: url('/assets/images/authentication.svg');background-position: center;
+                         background-size: 70% 75%;">
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
+                <div class="authentication-form mx-auto">
+                    <div class="logo-centered">
+                        <!-- <a href="http://llhd.kopilotus.id/app/home"><img src="http://llhd.kopilotus.id/src/img/brand.svg" alt="logo"></a> -->
+                    </div>
+                    <h3>Registrasi Akun LLHD</h3>
+                        <p>Panduan Registrasi. <a href="https://localhost:7145/docs/Tutorial_Penggunaan_Aplikasi_Pelayanan_Pengujian.pdf"><b>Klik Disini</b></a></p>
+                        <p>Download Template Surat Kuasa. <a href="https://localhost:7145/docs/Surat_Kuasa_PIC_Aplikasi_Pengujian_LLHD.docx"><b>Klik Disini</b></a></p>
+                    <form action="#" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control " name="nama_organisasi" placeholder="Nama Instansi" required="">
+                            <i class="ik ik-user"></i>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control " name="email" placeholder="Email Instansi" required="">
+                            <i class="ik ik-mail"></i>
+                        </div>
+
+                        <div class="form-group" x-data="{show:false}">
+                            <input x-bind:type="!show?'password':'text'" type="password" class="form-control " placeholder="Password" required="" name="password" minlength="8">
+
+                            <div class="input-group-append position-absolute" style="right: 10px;top:9px;">
+                                <a href="#" style="display: none;"><i class="ik ik-eye" aria-hidden="true"></i></a>
+                                <a href="#"><i class="ik ik-eye-off" aria-hidden="true"></i></a>
+                            </div>
+                            <i class="ik ik-lock"></i>
+                        </div>
+
+                        <div class="form-group" x-data="{show:false}">
+                            <input x-bind:type="!show?'password':'text'" type="password" class="form-control " placeholder="Confirm Password" required="" name="password_confirmation">
+                            <div class="input-group-append position-absolute" style="right: 10px;top:9px;">
+                                <a href="#" style="display: none;"><i class="ik ik-eye" aria-hidden="true"></i></a>
+                                <a href="#"><i class="ik ik-eye-off" aria-hidden="true"></i></a>
+                            </div>
+                            <i class="ik ik-lock"></i>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control " name="telepon" placeholder="Telepon" required="">
+                            <i class="ik ik-phone"></i>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="item_checkbox" name="item_checkbox" required="" value="1">
+                                    <span class="custom-control-label">Setuju dengan syarat dan ketentuan berlaku</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="sign-btn text-center">
+                            <button type="submit" class="btn btn-theme">Registrasi</button>
+                        </div>
+                    </form>
+                    <div class="register">
+                        <p>Sudah punya Akun? <a href="https://localhost:7145/login"><b>Sign In</b></a></p>
+                    </div>
+                    <div class="register">
+                        <div class="col-md-9">
+                            <a class="btn btn-primary float-right" data-toggle="modal" href="#calling-form-modal" id="openBtn">
+                                <i class="ik ik-phone"></i> Hubungi Admin
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div wire:ignore.self="" class="modal fade" id="calling-form-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Hubungi Admin LLHD</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                    <p>Jam Pelayanan 08.00 - 15.00</p>
+                    <a href="https://api.whatsapp.com/send?phone=6281511930751&amp;text=Selamat%20pagi%20Pagi/Siang,%20Selamat%20datang%20di%20aplikasi%20pelayanan%20pengujian%20LLHD%20DKI%20Jakarta.%20%20%0ANama:%20%0ANama%20Kegiatan%20Usaha:%20%0AKendala/Mohon%20Informasi%20:%20%0A" target="_blank"><i class="ik ik-phone"></i><b> Hubungi Admin Pelayanan</b></a> <br>
+                    <a href="#"><i class="ik ik-phone"></i><b> Hubungi Admin Penyerahan Hasil - 021 5292 1061</b></a> <br>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="~/assets/llhd/jquery-3.3.1.min.js"></script>
+    <script src="~/assets/llhd/popper.min.js"></script>
+    <script src="~/assets/llhd/bootstrap.min.js"></script>
+
+    <script src="~/assets/llhd/alpine.min.js" defer="defer"></script>
+
+</body>
+</html>
