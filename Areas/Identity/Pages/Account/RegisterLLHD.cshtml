@@ -1,4 +1,5 @@
 @page
+@model RegisterLLHDModel
 @{
     Layout = null;
 }
@@ -30,7 +31,9 @@
         Turbolinks.start();
     </script>
 
-<meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><title>Registrasi | LLHD - DKI Jakarta</title><meta name="description" content=""><meta name="keywords" content=""><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="http://llhd.kopilotus.id/favicon.png" type="image/x-icon">
+    <meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><title>Registrasi | LLHD - DKI Jakarta</title><meta name="description" content="">
+    <meta name="keywords" content=""><meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="~/assets/images/logo-dinas.png" type="image/x-icon">
 </head>
 
 <body>
@@ -50,39 +53,38 @@
                     <h3>Registrasi Akun LLHD</h3>
                         <p>Panduan Registrasi. <a href="https://localhost:7145/docs/Tutorial_Penggunaan_Aplikasi_Pelayanan_Pengujian.pdf"><b>Klik Disini</b></a></p>
                         <p>Download Template Surat Kuasa. <a href="https://localhost:7145/docs/Surat_Kuasa_PIC_Aplikasi_Pengujian_LLHD.docx"><b>Klik Disini</b></a></p>
-                    <form action="#" method="POST">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="POST">
                         <div class="form-group">
-                            <input type="text" class="form-control " name="nama_organisasi" placeholder="Nama Instansi" required="">
+                            <input type="text" class="form-control" asp-for="Input.FullName" placeholder="Nama Instansi" required="" />
                             <i class="ik ik-user"></i>
+                            <span asp-validation-for="Input.FullName"></span>
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control " name="email" placeholder="Email Instansi" required="">
+                            <input asp-for="Input.Email" class="form-control" placeholder="Email Instansi" required autocomplete="off">
                             <i class="ik ik-mail"></i>
+                            <span asp-validation-for="Input.Email"></span>
                         </div>
 
                         <div class="form-group" x-data="{show:false}">
-                            <input x-bind:type="!show?'password':'text'" type="password" class="form-control " placeholder="Password" required="" name="password" minlength="8">
+                            <input x-bind:type="!show?'password':'text'" asp-for="Input.Password" type="password" class="form-control " placeholder="Password" required="" minlength="8">
 
                             <div class="input-group-append position-absolute" style="right: 10px;top:9px;">
                                 <a href="#" style="display: none;"><i class="ik ik-eye" aria-hidden="true"></i></a>
                                 <a href="#"><i class="ik ik-eye-off" aria-hidden="true"></i></a>
                             </div>
                             <i class="ik ik-lock"></i>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
 
                         <div class="form-group" x-data="{show:false}">
-                            <input x-bind:type="!show?'password':'text'" type="password" class="form-control " placeholder="Confirm Password" required="" name="password_confirmation">
+                            <input x-bind:type="!show?'password':'text'" asp-for="Input.ConfirmPassword" type="password" class="form-control " placeholder="Confirm Password" required="">
                             <div class="input-group-append position-absolute" style="right: 10px;top:9px;">
                                 <a href="#" style="display: none;"><i class="ik ik-eye" aria-hidden="true"></i></a>
                                 <a href="#"><i class="ik ik-eye-off" aria-hidden="true"></i></a>
                             </div>
                             <i class="ik ik-lock"></i>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" class="form-control " name="telepon" placeholder="Telepon" required="">
-                            <i class="ik ik-phone"></i>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
 
                         <div class="row">

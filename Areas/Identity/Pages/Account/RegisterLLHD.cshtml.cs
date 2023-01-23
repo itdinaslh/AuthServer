@@ -80,23 +80,17 @@ namespace AuthServer.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Nama lengkap wajib diisi")]
+            [Required(ErrorMessage = "Nama instansi wajib diisi")]
             [Display(Name = "Nama Lengkap")]
             [MaxLength(50, ErrorMessage = "Max 50 Karakter")]
-            public string FullName { get; set; }
-
-            [Required(ErrorMessage = "NIK / No KTP wajib diisi")]
-            [Display(Name = "NIK / No KTP")]            
-            [Range(0, 9999999999999999, ErrorMessage = "Masukan format NIK dengan benar")]
-            [StringLength(16, MinimumLength = 16, ErrorMessage = "NIK harus 16 karakter")]
-            public string NIK { get; set; }
+            public string FullName { get; set; }            
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "{0} minimal {2} karakter", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} minimal {2} karakter", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]            
             public string Password { get; set; }            
@@ -117,8 +111,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
             ReturnUrl = HttpUtility.UrlDecode(returnUrl);
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
-
-        // private const string myReturn = "https%3a%2f%2flocalhost%3a7177%2fdashboard";
+        
         private string myReturn = HttpUtility.UrlEncode(Simpanan.ReturnUrl);
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -129,9 +122,10 @@ namespace AuthServer.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.FullName = Input.FullName;
-                user.UserName = Input.NIK.ToString();                      
+                user.UserName = Input.Email.ToString();   
+                user.InjectID = 1010;                   
 
-                await _userStore.SetUserNameAsync(user, Input.NIK.ToString(), CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Email.ToString(), CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
