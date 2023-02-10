@@ -1,0 +1,8 @@
+select {
+  outline: none;
+  border: none;
+}
+
+.login100-more::before {
+  background: none !important;
+}
