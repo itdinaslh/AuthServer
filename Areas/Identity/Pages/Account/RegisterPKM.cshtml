@@ -27,7 +27,7 @@
         <div class="container-login100">
             <div class="login100-more" style="background-image: url('/assets/images/bg-images/people.jpg');"></div>
             <div class="wrap-login100 p-l-50 p-r-50 p-t-50 p-b-50">
-                <form class="login100-form validate-form">
+                <form class="login100-form validate-form" asp-route-returnUrl="@Model.ReturnUrl" method="POST">
                     <span class="login100-form-title p-b-40">
                     Registrasi
                     </span>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Jenis PKM wajib dipilih">
                         <span class="label-input100">Jenis PKM</span>
-                        <select class="input100">
+                        <select class="input100" asp-for="Input.JenisPKM">
                             <option value="">-- Pilih jenis --</option>
                             <option value="1">Penyedia Jasa Angkutan</option>
                             <option value="2">Penyedia Jasa Pengolahan</option>

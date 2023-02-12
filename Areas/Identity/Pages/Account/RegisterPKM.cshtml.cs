@@ -103,6 +103,9 @@ namespace AuthServer.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "Password & konfirmasi tidak sesuai")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            public int JenisPKM { get; set; }
         }
 
 
@@ -123,7 +126,17 @@ namespace AuthServer.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FullName = Input.FullName;
                 user.UserName = Input.Email.ToString();   
-                user.InjectID = 1010;                   
+                user.InjectID = 1010;
+
+                int jenis = Input.JenisPKM;
+                string myRole = "PkmAngkut";
+
+                if (jenis == 2)
+                    myRole = "PkmOlah";
+                else if (jenis == 3)
+                    myRole = "PkmAngkutOlah";
+                else if (jenis == 4)
+                    myRole = "PkmUsaha";
 
                 await _userStore.SetUserNameAsync(user, Input.Email.ToString(), CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -135,7 +148,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var role = await _userManager.AddToRoleAsync(user, "LabClient");
+                    var role = await _userManager.AddToRoleAsync(user, myRole);
                     await _userManager.AddClaimAsync(user, new Claim("UserFullName", Input.FullName, ClaimValueTypes.String));
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
