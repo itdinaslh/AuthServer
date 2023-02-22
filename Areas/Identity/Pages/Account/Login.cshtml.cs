@@ -87,7 +87,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == Input.Email || u.Email == Input.Email || u.PhoneNumber == Input.Email);
 
                 if (user is not null) {
-                    var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, isPersistent: true, lockoutOnFailure: false);
 
                     if (result.Succeeded)
                     {
