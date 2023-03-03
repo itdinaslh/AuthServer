@@ -38,6 +38,12 @@ public class AppController : Controller
         return PartialView("AddApp");
     }
 
+    [HttpGet("/manage/applications/create-pass")]
+    public IActionResult CreatePasswordFlow()
+    {
+        return PartialView("AddApp");
+    }
+
     [HttpPost("/manage/applications/save")]
     public async Task<IActionResult> Save(AppModel model) {
         if (ModelState.IsValid) {
@@ -100,6 +106,36 @@ public class AppController : Controller
         }
 
         return PartialView("AddApp", model);
+    }
+
+    [HttpPost("/manage/applications/passflow/save")]
+    public async Task<IActionResult> SavePasswordFlowApp(AppModel model)
+    {
+        await using var scope = _serviceProvider.CreateAsyncScope();
+        var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
+
+        if (await manager.FindByClientIdAsync(model.ClientID) == null)
+        {
+            await manager.CreateAsync(new OpenIddictApplicationDescriptor
+            {
+                ClientId = model.ClientID,
+                ClientSecret = model.ClientSecret,                                
+                Permissions =
+                    {                        
+                        Permissions.Endpoints.Logout,
+                        Permissions.Endpoints.Token,                        
+                        Permissions.GrantTypes.Password,                       
+                        Permissions.Scopes.Email,
+                        Permissions.Scopes.Profile,
+                        Permissions.Scopes.Roles,
+                        Permissions.Prefixes.Scope + "api"
+                    }
+            });
+
+            return Json(Result.Success());
+        }
+
+        return Json(Result.Success());
     }
 
     [HttpGet("/manage/applications/edit")]
