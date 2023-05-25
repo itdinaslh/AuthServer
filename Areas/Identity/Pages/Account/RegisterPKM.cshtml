@@ -34,7 +34,7 @@
                     Registrasi
                     </span>
                     <div class="wrap-input100 validate-input" data-validate="Nama perusahaan wajib diisi">
-                        <span class="label-input100">Nama Perusahaan</span>
+                        <span class="label-input100">Nama Perusahaan/Kegiatan Usaha</span>
                         <input class="input100" asp-for="Input.FullName" placeholder="Nama perusahaan...">
                         <span class="focus-input100"></span>
                     </div>
@@ -43,16 +43,32 @@
                         <input class="input100" type="email" asp-for="Input.Email" placeholder="Alamat Email..." autocomplete="off" />
                         <span class="focus-input100"></span>
                     </div>
-                    <div class="wrap-input100 validate-input" data-validate="Jenis PKM wajib dipilih">
-                        <span class="label-input100">Jenis PKM</span>
-                        <select class="input100" asp-for="Input.JenisPKM">
-                            <option value="">-- Pilih jenis --</option>
-                            <option value="1">Penyedia Jasa Angkutan</option>
-                            <option value="2">Penyedia Jasa Pengolahan</option>
-                            <option value="3">Penyedia Jasa Angkutan &amp; Pengolahan</option>
-                            <option value="4">Usaha / Kegiatan</option>
-                        </select>
-                        <span class="focus-input100"></span>
+                    <div class="wrap-input100 validate-input" data-validate="Jenis Usaha wajib dipilih">
+                        <span class="label-input100">Jenis Usaha</span>
+                        <div class="contact100-form-checkbox mt-3">
+                            <input class="input-checkbox100" id="chkAngkut" type="checkbox" name="jasa-angkut">
+                            <label class="label-checkbox100" for="chkAngkut">
+                                <span class="txt1">
+                                    Jasa Pengangkutan                                   
+                                </span>
+                            </label>
+                        </div>
+                        <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" id="chkOlah" type="checkbox" name="jasa-olah">
+                            <label class="label-checkbox100" for="chkOlah">
+                                <span class="txt1">
+                                    Jasa Pengolahan                                   
+                                </span>
+                            </label>
+                        </div>
+                        <div class="contact100-form-checkbox mb-3">
+                            <input class="input-checkbox100" id="chkUsaha" type="checkbox" name="usaha-kegiatan">
+                            <label class="label-checkbox100" for="chkUsaha">
+                                <span class="txt1">
+                                    Usaha Kegiatan                                   
+                                </span>
+                            </label>
+                        </div>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Password wajib diisi">
                         <span class="label-input100">Password</span>
