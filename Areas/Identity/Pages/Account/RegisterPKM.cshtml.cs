@@ -103,9 +103,6 @@ namespace AuthServer.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "Password & konfirmasi tidak sesuai")]
             public string ConfirmPassword { get; set; }
-
-            [Required]
-            public int JenisPKM { get; set; }
         }
 
 
@@ -117,7 +114,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
         
         private string myReturn = HttpUtility.UrlEncode(Simpanan.ReturnUrl);
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(int[] jasaTypes, string returnUrl = null)
         {
             returnUrl ??= HttpUtility.UrlDecode(returnUrl);
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -126,17 +123,7 @@ namespace AuthServer.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FullName = Input.FullName;
                 user.UserName = Input.Email.ToString();   
-                user.InjectID = 1010;
-
-                int jenis = Input.JenisPKM;
-                string myRole = "PkmAngkut";
-
-                if (jenis == 2)
-                    myRole = "PkmOlah";
-                else if (jenis == 3)
-                    myRole = "PkmAngkutOlah";
-                else if (jenis == 4)
-                    myRole = "PkmUsaha";
+                user.InjectID = 1010;                
 
                 await _userStore.SetUserNameAsync(user, Input.Email.ToString(), CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -147,8 +134,20 @@ namespace AuthServer.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var role = await _userManager.AddToRoleAsync(user, myRole);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);   
+
+                    foreach(var i in jasaTypes) {
+                        if (i == 1) {
+                            await _userManager.AddToRoleAsync(user, "PkmAngkut");
+                        }
+                        if (i == 2) {
+                            await _userManager.AddToRoleAsync(user, "PkmOlah");
+                        }
+                        if (i == 3) {
+                            await _userManager.AddToRoleAsync(user, "PkmUsaha");
+                        }
+                    }
+
                     await _userManager.AddClaimAsync(user, new Claim("UserFullName", Input.FullName, ClaimValueTypes.String));
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
